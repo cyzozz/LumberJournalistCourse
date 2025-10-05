@@ -3,116 +3,84 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
     <title>Lumber Journalist Training</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <!-- Side Decorations -->
+    <!-- Decorative sides -->
     <div class="decor-left"></div>
     <div class="decor-right"></div>
 
-    <!-- Hero Image -->
-    <section id="hero" class="hero">
-      <img id="heroImage" src="" alt="LT2FG Hero Image" />
-    </section>
-
-    <!-- Header -->
-    <header>
-      <h1>Lumber Journalist Training Course</h1>
+    <!-- Hero Banner -->
+    <header class="hero-banner">
+      <div class="hero-content">
+        <h1>Lumber Journalist Training</h1>
+        <p>Learn the rules, master your craft, and publish with confidence.</p>
+        <button onclick="scrollToModules()">Start Training</button>
+      </div>
     </header>
 
-    <!-- Main Content Layout -->
-    <main class="page-wrapper">
-      <!-- Left Column -->
-      <div class="column left">
-        <section class="decor-card">
-          <p>Tip: Always double-check grammar!</p>
-        </section>
-        <section class="decor-card">
-          <p>Fun Fact: Lumber News publishes weekly!</p>
-        </section>
-      </div>
+    <!-- Main Content -->
+    <main class="content">
+      <section id="modules" class="card-section">
+        <h2>Training Modules</h2>
+        <div class="cards-grid">
+          <div class="info-card" onclick="openModule('googleDocs')">
+            <h3>Google Docs Rules</h3>
+            <p>
+              Learn how to collaborate, format, and write properly using the
+              shared documents.
+            </p>
+          </div>
+          <div class="info-card" onclick="openModule('discord')">
+            <h3>Discord Guidelines</h3>
+            <p>
+              Understand communication, privacy, and teamwork inside the Lumber
+              News Discord.
+            </p>
+          </div>
+          <div class="info-card" onclick="openModule('trello')">
+            <h3>Trello Procedures</h3>
+            <p>
+              Track assignments, log interviews, and manage weekly news duties.
+            </p>
+          </div>
+          <div class="info-card" onclick="openModule('roles')">
+            <h3>Roles & Responsibilities</h3>
+            <p>
+              Know each rank’s duties and how the Lumber News hierarchy
+              operates.
+            </p>
+          </div>
+          <div class="info-card" onclick="openModule('interviews')">
+            <h3>Interviews</h3>
+            <p>
+              Learn how to write and conduct interviews professionally with set
+              questions.
+            </p>
+          </div>
+        </div>
 
-      <!-- Center Column -->
-      <div class="column center">
-        <!-- Dashboard -->
-        <section id="dashboard" class="card">
-          <h2>Welcome, Journalist!</h2>
+        <section id="certification" class="section">
+          <h2>Certification Test</h2>
           <p>
-            Master your skills as part of the
-            <b>Lumber Tycoon 2 Fan Group</b> journalism team.
+            Once you’ve completed the training, test your knowledge by taking
+            the official Journalist Quiz.
           </p>
-          <div id="progress">
-            <h3>Your Progress</h3>
-            <div class="progress-bar">
-              <div id="progressFill" class="progress-fill"></div>
-            </div>
-            <p id="progressText">0% completed</p>
-            <div class="badges">
-              <span id="badgeWriting" class="badge"> Writing</span>
-              <span id="badgeInterview" class="badge"> Interview</span>
-              <span id="badgeEthics" class="badge"> Ethics</span>
-            </div>
-          </div>
+          <a href="quiz.html" class="button">Take the Quiz</a>
         </section>
 
-        <!-- Modules -->
-        <section id="modules" class="card">
-          <h2>Training Modules</h2>
-          <div class="module-buttons">
-            <button onclick="openModule('googleDocs')">
-              📄 Google Docs Rules
-            </button>
-            <button onclick="openModule('discord')">
-              💬 Discord Guidelines
-            </button>
-            <button onclick="openModule('trello')">📋 Trello Procedures</button>
-            <button onclick="openModule('roles')">👥 Roles & Ranks</button>
-            <button onclick="openModule('warnings')">⚠️ Warnings System</button>
-            <button onclick="openModule('interviews')">
-              🎤 Interview Guidelines
-            </button>
-          </div>
-          <div id="moduleContent" class="module-content">
-            <p>Select a module to view its contents.</p>
-          </div>
-        </section>
-
-        <!-- Quiz -->
-        <section id="quiz" class="card">
-          <h2>Final Quiz</h2>
-          <p>Answer the following questions to complete your training:</p>
-          <div id="quizArea"></div>
-          <div id="quizResult" style="margin-top: 15px"></div>
-          <button onclick="startQuiz()">Start Quiz</button>
-        </section>
-      </div>
-
-      <!-- Right Column -->
-      <div class="column right">
-        <section class="card tips">
-          <h3>Quick Tips / Fun Facts</h3>
-          <ul>
-            <li>Keep communication clear with other journalists.</li>
-            <li>Always follow the Google Doc template.</li>
-            <li>Update Trello cards after completing tasks.</li>
-          </ul>
-        </section>
-
-        <section class="card tips">
-          <h3>Extra Notes</h3>
-          <ul>
-            <li>Check Discord announcements regularly.</li>
-            <li>Respect all rules to avoid warnings.</li>
-            <li>Enjoy learning and improving your skills!</li>
-          </ul>
-        </section>
-      </div>
+        <!-- Dynamic content -->
+        <div id="moduleContent" class="module-details"></div>
+      </section>
     </main>
 
-    <!-- Footer -->
     <footer>
-      <p>© 2025 LT2FG Lumber Journalist Training | Made with ❤️</p>
+      <p>© 2025 Lumber Tycoon 2 Fan Group — Journalist Training Handbook</p>
     </footer>
 
     <script src="script.js"></script>
