@@ -1,158 +1,193 @@
 const quizData = [
+  // (same questions as before)
   {
-    q: "What does a Lumber Journalist primarily do?",
-    a: "Report group events and updates",
+    q: "Where should you write your news articles?",
+    a: "The shared Google Doc",
     options: [
-      "Build bases",
-      "Sell wood",
-      "Report group events and updates",
-      "Trade axes",
+      "Your own private Google Doc for drafts",
+      "The shared Google Doc",
+      "A Discord message in #lumber-news",
+      "A personal notebook",
     ],
   },
   {
-    q: "Who should you verify information with before publishing?",
-    a: "A senior journalist or group leader",
+    q: "What should you never do with the Google Doc history?",
+    a: "Erase previous history",
     options: [
-      "Random players",
-      "Builders",
-      "A senior journalist or group leader",
-      "No one",
+      "Make minor edits without noting them",
+      "Erase previous history",
+      "Move sections to a new document",
+      "Duplicate content in another doc",
     ],
   },
   {
-    q: "Which tone should journalists use?",
-    a: "Neutral and professional",
+    q: "Which channel should you check for updates and mentions?",
+    a: "#announcements",
     options: [
-      "Sarcastic",
-      "Neutral and professional",
-      "Aggressive",
-      "Emotional",
+      "#general for discussions",
+      "#announcements",
+      "#lumber-news for news only",
+      "#vc_text for voice updates",
     ],
   },
   {
-    q: "When should you post breaking news?",
-    a: "After confirming accuracy",
+    q: "What happens if you share private channels info outside the group?",
+    a: "You can be instantly terminated",
     options: [
-      "Immediately",
-      "After confirming accuracy",
-      "Whenever",
-      "After others post it",
+      "You can be instantly terminated",
+      "You may receive a warning first",
+      "Nothing if it seems harmless",
+      "You could get a note from a manager",
     ],
   },
   {
-    q: "What’s important in a headline?",
-    a: "Clarity and accuracy",
-    options: ["Clickbait", "Clarity and accuracy", "Exaggeration", "Mystery"],
+    q: "How many warnings lead to being kicked from Lumber News?",
+    a: "3",
+    options: ["1", "2", "3", "4"],
   },
   {
-    q: "How should you handle a typo after posting?",
-    a: "Correct it and note the edit",
+    q: "Who manages job assignments on Trello?",
+    a: "Trello Manager",
     options: [
-      "Ignore it",
-      "Delete the post",
-      "Correct it and note the edit",
-      "Blame others",
+      "Assistant Manager",
+      "Trello Manager",
+      "Application Manager",
+      "Veteran Journalist",
     ],
   },
   {
-    q: "What should every report include?",
-    a: "Source and date",
-    options: ["Memes", "Source and date", "Opinions", "Speculations"],
-  },
-  {
-    q: "How often should you report group events?",
-    a: "Whenever significant updates happen",
+    q: "Which rule applies to multiple people collaborating in Google Docs?",
+    a: "Do not exclude others",
     options: [
-      "Every day",
-      "Whenever significant updates happen",
-      "Once per week",
-      "Only if told to",
+      "Do not exclude others",
+      "Focus only on your section",
+      "Edit only after approval",
+      "Merge all content at the end",
     ],
   },
   {
-    q: "What’s the role of objectivity?",
-    a: "Preventing bias in articles",
+    q: "How should you sign off your articles?",
+    a: "News by @username",
     options: [
-      "Showing emotion",
-      "Preventing bias in articles",
-      "Adding opinions",
-      "Choosing sides",
+      "News by @username",
+      "By the team",
+      "Anonymous for safety",
+      "Initials only",
     ],
   },
   {
-    q: "What should a journalist do before posting a photo?",
-    a: "Check it’s appropriate and relevant",
+    q: "Which Discord command shows upcoming birthdays?",
+    a: "/birthday show-nearest",
     options: [
-      "Just post it",
-      "Ask randoms",
-      "Check it’s appropriate and relevant",
-      "Ignore it",
+      "/birthday show-nearest",
+      "/birthday list",
+      "/next-birthday",
+      "/birthday upcoming",
     ],
   },
   {
-    q: "Who represents the LT2FG group publicly?",
-    a: "All journalists",
-    options: ["Just the owner", "All journalists", "Builders", "Mods only"],
+    q: "Which rank is given to new Lumber Journalists learning the basics?",
+    a: "Trainee Journalist",
+    options: [
+      "Trainee Journalist",
+      "Junior Journalist",
+      "Experience Journalist",
+      "Senior Journalist",
+    ],
   },
   {
-    q: "What happens if a journalist fails to meet standards?",
-    a: "They may retake training or be suspended",
+    q: "What should you do if you can’t complete a task?",
+    a: "Have another Journalist take over",
     options: [
-      "Nothing",
-      "Instant ban",
-      "They may retake training or be suspended",
-      "Lose money",
+      "Have another Journalist take over",
+      "Post an update and continue later",
+      "Wait until someone notices",
+      "Ask a manager to assign it randomly",
+    ],
+  },
+  {
+    q: "Who is allowed to change ranks, points, and answer values on Trello?",
+    a: "Only Managers",
+    options: [
+      "Only Managers",
+      "Any Journalist",
+      "Veteran Journalists",
+      "Assistant Managers and above",
     ],
   },
 ];
 
+// shuffle questions
+const questions = quizData.sort(() => Math.random() - 0.5);
+
 let current = 0;
 let score = 0;
 let mistakes = 0;
-
 const quizContainer = document.getElementById("quiz");
 const nextBtn = document.getElementById("nextBtn");
 
 function loadQuestion() {
-  const q = quizData[current];
+  const q = questions[current];
   quizContainer.innerHTML = `
     <h2>${current + 1}. ${q.q}</h2>
-    ${q.options
-      .map(
-        (opt) =>
-          `<div class='quiz-option' onclick='selectAnswer("${opt}")'>${opt}</div>`
-      )
-      .join("")}
+    <div class="options">
+      ${q.options
+        .map(
+          (opt) => `<div class='quiz-option' data-answer="${opt}">${opt}</div>`
+        )
+        .join("")}
+    </div>
   `;
+
+  document.querySelectorAll(".quiz-option").forEach((option) => {
+    option.addEventListener("click", () => selectAnswer(option));
+  });
 }
 
-function selectAnswer(selected) {
-  const correct = quizData[current].a;
-  if (selected === correct) {
-    score++;
-  } else {
-    mistakes++;
-  }
+function selectAnswer(optionEl) {
+  const selected = optionEl.getAttribute("data-answer");
+  const correct = questions[current].a;
+
+  // disable further clicks
+  document.querySelectorAll(".quiz-option").forEach((opt) => {
+    opt.style.pointerEvents = "none";
+    if (opt.getAttribute("data-answer") === correct) {
+      opt.style.background = "#b6e2a1"; // green
+    } else if (opt === optionEl) {
+      opt.style.background = "#f5a3a3"; // red
+    }
+  });
+
+  if (selected === correct) score++;
+  else mistakes++;
 
   current++;
-  if (mistakes >= 3) {
-    alert("❌ You failed the quiz. You can retry!");
-    location.reload();
-    return;
-  }
-
-  if (current < quizData.length) {
-    loadQuestion();
-  } else {
-    quizContainer.innerHTML = `<h2>✅ Test Complete!</h2>
-    <p>You got ${score} out of ${quizData.length} correct.</p>
-    <a href="index.html" class="button">Return Home</a>`;
-    nextBtn.style.display = "none";
-  }
+  nextBtn.disabled = false;
 }
 
 nextBtn.addEventListener("click", () => {
-  if (current < quizData.length) loadQuestion();
+  if (mistakes >= 3) {
+    quizContainer.innerHTML = `
+      <h2>❌ You failed the test.</h2>
+      <p>You made 3 mistakes. Try again!</p>
+      <a href="quiz.html" class="button">Retry</a>
+    `;
+    nextBtn.style.display = "none";
+    return;
+  }
+
+  if (current < questions.length) {
+    loadQuestion();
+    nextBtn.disabled = true;
+  } else {
+    quizContainer.innerHTML = `
+      <h2>✅ Test Complete!</h2>
+      <p>You got ${score} out of ${questions.length} correct.</p>
+      <a href="index.html" class="button">Return Home</a>
+    `;
+    nextBtn.style.display = "none";
+  }
 });
 
+nextBtn.disabled = true;
 loadQuestion();

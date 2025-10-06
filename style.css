@@ -219,3 +219,29 @@ footer {
 .quiz-option:hover {
   background: #e8eef8;
 }
+.options {
+  margin-top: 1rem;
+}
+
+.quiz-option.correct {
+  background: #b6e2a1;
+}
+
+.quiz-option.wrong {
+  background: #f5a3a3;
+}
+
+.quiz-option.disabled {
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+#quiz-controls {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+#nextBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

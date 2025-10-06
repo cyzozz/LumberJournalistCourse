@@ -1,149 +1,68 @@
-const studySection = document.getElementById("study-section");
-const quizSection = document.getElementById("quiz-section");
-const startQuizBtn = document.getElementById("start-quiz-btn");
-const quizContainer = document.getElementById("quiz-container");
-const nextBtn = document.getElementById("next-btn");
-const result = document.getElementById("result");
-const timerDisplay = document.getElementById("timer");
-
-let currentQuestion = 0;
-let score = 0;
-let questions = [];
-let timer;
-let timeLeft = 180; // 3 minutes
-
-const allQuestions = [
-  {
-    q: "Where should you write your news articles?",
-    a: ["Separate Google Docs", "The shared Google Doc", "Trello comments"],
-    correct: 1,
-  },
-  {
-    q: "What should you never do with the document history?",
-    a: ["Review it", "Edit it carefully", "Erase it"],
-    correct: 2,
-  },
-  {
-    q: "What should you check regularly on Discord?",
-    a: ["#announcements", "#general", "#off-topic"],
-    correct: 0,
-  },
-  {
-    q: "What happens if you leak private information?",
-    a: ["Warning", "Termination", "Nothing"],
-    correct: 1,
-  },
-  { q: "How many warnings lead to a kick?", a: ["1", "2", "3"], correct: 2 },
-  {
-    q: "Where do you claim your weekly news task?",
-    a: ["Trello", "Google Docs", "Discord"],
-    correct: 0,
-  },
-  {
-    q: "Who manages job assignments?",
-    a: ["Application Manager", "Trello Manager", "Veteran Journalist"],
-    correct: 1,
-  },
-  {
-    q: "What should you do if you can’t complete a task?",
-    a: ["Ignore it", "Complain", "Tell another Journalist"],
-    correct: 2,
-  },
-  { q: "Should you collaborate with others?", a: ["Yes", "No"], correct: 0 },
-  {
-    q: "What’s the correct way to sign off your article?",
-    a: ["Your Discord name", "News by @username", "Anonymous"],
-    correct: 1,
-  },
-  { q: "How many total warnings can you get?", a: ["2", "3", "4"], correct: 1 },
-  {
-    q: "Who should you contact if you find an error?",
-    a: ["Manager", "Random member", "Yourself"],
-    correct: 0,
-  },
-];
-
-// Shuffle questions each time
-function shuffle(arr) {
-  return arr.sort(() => Math.random() - 0.5);
-}
-
-startQuizBtn.addEventListener("click", () => {
-  studySection.classList.add("hidden");
-  quizSection.classList.remove("hidden");
-  questions = shuffle([...allQuestions]);
-  startTimer();
-  showQuestion();
+// Change hero background image randomly
+document.addEventListener("DOMContentLoaded", () => {
+  const hero = document.querySelector(".hero-banner");
+  const randomImage = `https://picsum.photos/1600/600?random=${Math.floor(
+    Math.random() * 1000
+  )}`;
+  hero.style.backgroundImage = `url('${randomImage}')`;
 });
 
-function showQuestion() {
-  if (currentQuestion >= questions.length) {
-    endQuiz();
-    return;
-  }
-
-  const q = questions[currentQuestion];
-  quizContainer.innerHTML = `
-    <h3>${q.q}</h3>
-    <div class="answers">
-      ${q.a
-        .map(
-          (opt, i) => `
-        <button class="btn answer" data-index="${i}">${opt}</button>
-      `
-        )
-        .join("")}
-    </div>
-  `;
-
-  document.querySelectorAll(".answer").forEach((btn) => {
-    btn.addEventListener("click", () => handleAnswer(btn));
-  });
+function scrollToModules() {
+  document.getElementById("modules").scrollIntoView({ behavior: "smooth" });
 }
 
-function handleAnswer(btn) {
-  const selected = parseInt(btn.dataset.index);
-  if (selected === questions[currentQuestion].correct) {
-    score++;
-    btn.style.background = "#4CAF50";
-  } else {
-    btn.style.background = "#e74c3c";
-  }
+// Simple content loader
+const moduleData = {
+  googleDocs: `
+    <h3>Google Docs Rules</h3>
+    <p>Do news in the group document. Keep spacing consistent and always start with the most important part of your article.</p>
+    <ul>
+      <li>Use Grammarly or ask a colleague to check grammar.</li>
+      <li>Do not erase history or use separate docs.</li>
+      <li>Include your name at the end (News by @username).</li>
+    </ul>
+  `,
+  discord: `
+    <h3>Discord Guidelines</h3>
+    <p>Always check <strong>#announcements</strong> for updates. Never share private channels or confidential info outside the team.</p>
+    <ul>
+      <li>Use /birthday show-nearest for birthdays.</li>
+      <li>Follow Roblox and Discord ToS.</li>
+      <li>Update others about your progress regularly.</li>
+    </ul>
+  `,
+  trello: `
+    <h3>Trello Procedures</h3>
+    <p>Use Trello to claim cards, track interviews, and report weekly progress.</p>
+    <ul>
+      <li>Comment when you take a task and include time and timezone.</li>
+      <li>Do not take others’ cards without permission.</li>
+      <li>Read and follow the Trello Card instructions carefully.</li>
+    </ul>
+  `,
+  roles: `
+    <h3>Roles & Responsibilities</h3>
+    <p>Every rank has a purpose in Lumber News. Respect hierarchy and collaborate professionally.</p>
+    <ul>
+      <li><strong>Manager</strong> – Oversees all Journalist activity.</li>
+      <li><strong>Assistant Manager</strong> – Handles coordination and issues.</li>
+      <li><strong>Veteran Journalist</strong> – Trusted members with years of contribution.</li>
+    </ul>
+  `,
+  interviews: `
+    <h3>Interview Guidelines</h3>
+    <p>Prepare questions, stay professional, and never interview banned players.</p>
+    <ul>
+      <li>Ask questions like “How did you discover LT2?” or “Favorite moment?”</li>
+      <li>Log all responses in Google Docs.</li>
+      <li>Keep tone respectful and neutral.</li>
+    </ul>
+  `,
+};
 
-  document.querySelectorAll(".answer").forEach((b) => (b.disabled = true));
-
-  nextBtn.classList.remove("hidden");
-}
-
-nextBtn.addEventListener("click", () => {
-  currentQuestion++;
-  nextBtn.classList.add("hidden");
-  showQuestion();
-});
-
-function startTimer() {
-  timer = setInterval(() => {
-    timeLeft--;
-    const minutes = Math.floor(timeLeft / 60);
-    const seconds = timeLeft % 60;
-    timerDisplay.textContent = `${minutes.toString().padStart(2, "0")}:${seconds
-      .toString()
-      .padStart(2, "0")}`;
-    if (timeLeft <= 0) {
-      clearInterval(timer);
-      endQuiz(true);
-    }
-  }, 1000);
-}
-
-function endQuiz(timeExpired = false) {
-  clearInterval(timer);
-  quizContainer.innerHTML = "";
-  nextBtn.classList.add("hidden");
-  const failed = score < 9 || timeExpired; // must get at least 9/12
-
-  result.classList.remove("hidden");
-  result.innerHTML = failed
-    ? `<h3>❌ You didn't pass. Try again!</h3><p>You got ${score}/12 correct.</p><button class="btn" onclick="location.reload()">Retry</button>`
-    : `<h3>✅ Congratulations!</h3><p>You passed with ${score}/12 correct!</p>`;
+function openModule(module) {
+  const content = document.getElementById("moduleContent");
+  content.innerHTML = moduleData[module] || "<p>Module not found.</p>";
+  content.classList.add("active");
+  content.scrollIntoView({ behavior: "smooth" });
 }
